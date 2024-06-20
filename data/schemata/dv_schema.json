@@ -1,0 +1,16 @@
+[
+    {"name":"file", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"event_date", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"advertiser", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"advertiser_id", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"advertiser_currency", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"insertion_order", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"insertion_order_id", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"line_item", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"line_item_id", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"line_item_type", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"impressions", "type":"INT64", "mode":"NULLABLE"},
+    {"name":"clicks", "type":"INT64", "mode":"NULLABLE"},
+    {"name":"revenue", "type":"FLOAT64", "mode":"NULLABLE"},
+    {"name":"media_cost", "type":"FLOAT64", "mode":"NULLABLE"}
+]
