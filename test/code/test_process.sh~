@@ -1,0 +1,22 @@
+#!/bin/bash
+
+dir="."
+
+for file in "$dir"/proc_*; do
+    # Extract filename from the path
+    filename=$(basename -- "$file")
+    echo $filename
+
+    # Check if the file is present in tracking.txt and if it has not been processed yet
+    if awk -F'\t' -v filename="$filename" '$1 == filename && $6 == "0"' test_proc.txt ; then
+        echo "Processing $file..."
+
+        # Your code to process the file goes here
+	echo "Processing code..."
+
+        # After processing the file, update its status in tracking.txt
+        awk -F'\t' -v filename="$filename" 'BEGIN {OFS = FS} $1 == filename {$6 = "1"} 1' test_proc.txt > temp.txt && mv temp.txt test_proc.txt
+    else
+        echo "$file has already been processed."
+    fi
+done

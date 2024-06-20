@@ -1,0 +1,21 @@
+[
+    {"name":"file", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"event_date", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"advertiser", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"advertiser_id", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"campaign", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"campaign_id", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"site_cm360", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"placement", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"placement_id", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"ad", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"ad_id", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"ad_type", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"creative_type", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"payment_source", "type":"STRING", "mode":"NULLABLE"},
+    {"name":"impressions", "type":"INT64", "mode":"NULLABLE"},
+    {"name":"clicks", "type":"INT64", "mode":"NULLABLE"},
+    {"name":"rich_media_impressions", "type":"INT64", "mode":"NULLABLE"},
+    {"name":"video_plays", "type":"INT64", "mode":"NULLABLE"},
+    {"name":"video_views", "type":"INT64", "mode":"NULLABLE"}
+]

@@ -1,0 +1,89 @@
+#!/bin/bash
+
+#
+# script to load dataset to bq
+#
+
+if [ $# -gt 0 ]
+then
+    dir=$1
+else
+    dir="."
+fi
+
+
+# GCP project params
+project="gmp-reporting-411717"
+dataset="validation"
+table="cm_90d"
+results_query="select\
+	file, count(*) records, sum(impressions)/1000000 impr_mm
+	from \`$project.$dataset.$table\`
+	group by file
+	order by file;"
+
+iters=0
+
+
+printf "Setting project as $project\n"
+gcloud config set project $project
+#gcloud components update
+
+
+# create dataset if it does not exist...
+if ! bq ls -n 1000 | grep -q $dataset;
+then
+    bq --project_id=$project mk $dataset
+fi
+
+# create table if it doens not exist...
+if ! bq --project_id=$project ls -n 1000 $dataset | grep -q $table;
+then
+    bq --project_id=$project mk --table "${dataset}.${table}"
+fi
+
+
+for file in "$dir"/proc_*;
+do
+
+    filename=$(basename -- "$file")
+    datetime=$(date '+%Y-%m-%d %H:%M:%S')
+    run_or_not=$(grep $filename tracking.txt | awk -F'\t' '{ print $6 }')
+    report_date=$(echo "$file" | sed -n 's/.*_Day_\([0-9]\{8\}\).*/\1/p')
+    report_date_formatted="${report_date:0:4}-${report_date:4:2}-${report_date:6:2}"
+
+    
+    if [ "$run_or_not" = '0' ];
+    then
+	echo "Processing $file..."
+	(( iters ++ ))
+	
+	printf "\nProcessing $report_date_formatted report...\n"
+	bq load --source_format=CSV --field_delimiter=tab "${dataset}.${table}" "$file" ./cm_schema.json
+	
+    else
+	echo "$report_date_formatted CM360 file already uploaded."
+    fi
+    
+    file_query="select count(*) rows_in_tbl from \`${project}.${dataset}.${table}\` where file = '${file:2}';"
+    bq query --use_legacy_sql=false $file_query
+
+    awk -F'\t' -v OFS='\t' -v filename="$filename" -v datetime="$datetime" '$4 == filename && $6 == "0" {$6 = datetime} 1' tracking.txt > temp.txt && mv temp.txt tracking.txt
+    
+done
+
+printf "%0.s=" {1..80}
+printf "\nWrote $iters proc_* files to upload (refer to tracking.txt)\n\n"
+
+
+bq query --use_legacy_sql=false $results_query
+
+
+
+
+
+
+#
+# author: joel deerwester
+# date: 2024-01-17
+#
